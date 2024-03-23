@@ -6,11 +6,20 @@ import { AuthContext } from "../Context/AuthContext";
 import WelcomeHeader from "../Components/WelcomeHeader";
 import SearchBar from "../Components/SearchBar";
 import Colors from "../Shared/Colors";
+import Api from "../Shared/Api";
 
 export default function Home() {
   const { userDetails, setUserDetails } = useContext(AuthContext);
-
   if (userDetails === undefined) return <Loading />;
+
+  const getSliders = async () => {
+    const res = await Api.getSliders();
+    console.log(res.data.data);
+  };
+
+  useEffect(() => {
+    getSliders();
+  }, []);
 
   return (
     <View style={styles.container}>
