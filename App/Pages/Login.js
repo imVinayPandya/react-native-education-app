@@ -1,6 +1,6 @@
 //
 // import libraries
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -19,25 +19,30 @@ import {
 //
 // own component
 import Colors from "../Shared/Colors";
+import { AuthContext } from "../Context/AuthContext";
+import Services from "../Shared/Services";
+
+// config
+GoogleSignin.configure({
+  // scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
+  iosClientId:
+    "1015804469648-42je1ro7uvubppdlt8j62df48lpnojss.apps.googleusercontent.com", // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+  // googleServicePlistPath: "", // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
+  // openIdRealm: "", // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
+  profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
+});
 
 export default function Login() {
-  const [state, setState] = useState({});
+  // context
+  const { userDetails, setUserDetails } = useContext(AuthContext);
 
-  GoogleSignin.configure({
-    // scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
-    iosClientId:
-      "1015804469648-42je1ro7uvubppdlt8j62df48lpnojss.apps.googleusercontent.com", // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-    // googleServicePlistPath: "", // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
-    // openIdRealm: "", // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
-    profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
-  });
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      setState({ userInfo });
-      alert("Login success!");
+      const response = await GoogleSignin.signIn();
+      setUserDetails(response);
+      await Services.setUserDetails(response);
+      alert("Welcome " + response.user.name);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
