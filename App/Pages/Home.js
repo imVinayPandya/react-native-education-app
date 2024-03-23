@@ -4,6 +4,8 @@ import Services from "../Shared/Services";
 import Loading from "../Components/Loading";
 import { AuthContext } from "../Context/AuthContext";
 import WelcomeHeader from "../Components/WelcomeHeader";
+import SearchBar from "../Components/SearchBar";
+import Colors from "../Shared/Colors";
 
 export default function Home() {
   const { userDetails, setUserDetails } = useContext(AuthContext);
@@ -11,9 +13,10 @@ export default function Home() {
   if (userDetails === undefined) return <Loading />;
 
   return (
-    <View>
+    <View style={styles.container}>
       <WelcomeHeader />
-      <View style={styles.container}>
+      <SearchBar />
+      <View>
         <Button title="Logout" onPress={Services.logoutUser} />
       </View>
     </View>
@@ -22,10 +25,9 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 16,
+    marginTop: 24,
+    backgroundColor: Colors.bgColor,
     height: "100%",
-    width: "100%",
   },
 });
