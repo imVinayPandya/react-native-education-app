@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "package": "com.vinaypandya.educationapp",
@@ -23,13 +25,15 @@
             ]
           }
         ]
-      }
+      },
+      "bundleIdentifier": "com.vinaypandya.educationapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vinaypandya.educationapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

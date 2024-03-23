@@ -1,6 +1,6 @@
 //
 // import libraries
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -21,6 +21,8 @@ import {
 import Colors from "../Shared/Colors";
 
 export default function Login() {
+  const [state, setState] = useState({});
+
   GoogleSignin.configure({
     // scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
     iosClientId:
@@ -30,20 +32,26 @@ export default function Login() {
     profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
   });
   const signIn = async () => {
-    alert("working");
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
       setState({ userInfo });
+      alert("Login success!");
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
+        alert("Login cancelled");
       } else if (error.code === statusCodes.IN_PROGRESS) {
         // operation (e.g. sign in) is in progress already
+        alert("Login already in-progress");
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         // play services not available or outdated
+        alert("Play service is not available");
       } else {
         // some other error happened
+        alert("something went wrong");
+        console.error(error);
       }
     }
   };
