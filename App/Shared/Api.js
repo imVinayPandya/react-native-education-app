@@ -10,8 +10,13 @@ const api = create({
   },
 });
 
+// slider
 const getSliders = () => api.get("/sliders?populate=*");
+
+// video course
+const getVideoCourse = () => api.get("/video-courses?populate=*");
 
 export default {
   getSliders,
+  getVideoCourse,
 };
