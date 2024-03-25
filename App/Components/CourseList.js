@@ -38,7 +38,6 @@ export default function CourseList(props) {
   }, [props.type]);
 
   const openCourseDetails = (course) => {
-    console.log(course);
     navigation.navigate("course-details", { course });
   };
 

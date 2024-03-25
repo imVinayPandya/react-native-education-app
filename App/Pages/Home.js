@@ -32,7 +32,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    marginTop: 24,
+    paddingTop: 40,
     backgroundColor: Colors.bgColor,
     height: "100%",
   },

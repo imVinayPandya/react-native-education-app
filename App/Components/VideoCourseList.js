@@ -1,18 +1,30 @@
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Api from "../Shared/Api";
 
 export default function VideoCourseList() {
+  // state
   const [videoCourses, setVideoCourses] = useState([]);
+
+  // hooks
+  const navigation = useNavigation();
 
   const getVideoCourse = async () => {
     const res = await Api.getVideoCourse();
     const formattedData = res.data.data.map((item) => ({
       id: item.id,
-      title: item.attributes.title,
+      name: item.attributes.title,
       description: item.attributes.description,
       image: item.attributes.image.data.attributes.url,
-      videoTopics: item.attributes.videoTopic,
+      topics: item.attributes.videoTopic,
     }));
     setVideoCourses(formattedData);
   };
@@ -20,6 +32,10 @@ export default function VideoCourseList() {
   useEffect(() => {
     getVideoCourse();
   }, []);
+
+  const openCourseDetails = (course) => {
+    navigation.navigate("course-details", { course });
+  };
 
   return (
     <View style={styles.container}>
@@ -30,9 +46,9 @@ export default function VideoCourseList() {
         data={videoCourses}
         renderItem={({ item }) => {
           return (
-            <View>
+            <TouchableOpacity onPress={() => openCourseDetails(item)}>
               <Image source={{ uri: item.image }} style={styles.courseImage} />
-            </View>
+            </TouchableOpacity>
           );
         }}
       />
