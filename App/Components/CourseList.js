@@ -1,10 +1,25 @@
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+// import libraries
 import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+
+// import local files
 import Api from "../Shared/Api";
 import Colors from "../Shared/Colors";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CourseList(props) {
+  // state
   const [courseList, setCourseList] = useState([]);
+
+  // hooks
+  const navigation = useNavigation();
 
   const getCourseList = async () => {
     const res = (await Api.getCourseList(props.type)).data;
@@ -22,6 +37,11 @@ export default function CourseList(props) {
     getCourseList();
   }, [props.type]);
 
+  const openCourseDetails = (course) => {
+    console.log(course);
+    navigation.navigate("course-details", { course });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{props.type} Course</Text>
@@ -31,7 +51,10 @@ export default function CourseList(props) {
         data={courseList}
         renderItem={({ item }) => {
           return (
-            <View style={styles.course}>
+            <TouchableOpacity
+              onPress={() => openCourseDetails(item)}
+              style={styles.course}
+            >
               <Image source={{ uri: item.image }} style={styles.courseImage} />
               <View style={{ padding: 10 }}>
                 <Text style={styles.courseTitle}>{item.name}</Text>
@@ -39,7 +62,7 @@ export default function CourseList(props) {
                   {item.topics?.length} Lessons
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           );
         }}
       />

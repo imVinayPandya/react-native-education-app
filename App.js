@@ -1,11 +1,15 @@
+// import libraries
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+
+// imports local files
 import Login from "./App/Pages/Login";
 import { AuthContext } from "./App/Context/AuthContext";
 import { useEffect, useState } from "react";
-import Home from "./App/Pages/Home";
 import Services from "./App/Shared/Services";
 import Loading from "./App/Components/Loading";
+import HomeNavigation from "./App/Navigations/HomeNavigation";
 
 export default function App() {
   const [userDetails, setUserDetails] = useState();
@@ -19,12 +23,16 @@ export default function App() {
   if (userDetails === undefined) return <Loading />;
 
   return (
-    <View>
-      <AuthContext.Provider value={{ userDetails, setUserDetails }}>
-        {userDetails ? <Home /> : <Login />}
-        <StatusBar style="auto" />
-      </AuthContext.Provider>
-    </View>
+    <AuthContext.Provider value={{ userDetails, setUserDetails }}>
+      {userDetails ? (
+        <NavigationContainer>
+          <HomeNavigation />
+        </NavigationContainer>
+      ) : (
+        <Login />
+      )}
+      <StatusBar style="auto" />
+    </AuthContext.Provider>
   );
 }
 
