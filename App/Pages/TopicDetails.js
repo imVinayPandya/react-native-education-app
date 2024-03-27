@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
+
 import Colors from "../Shared/Colors";
 
 export default function TopicDetails() {
@@ -22,9 +24,11 @@ export default function TopicDetails() {
 
   // variables
   const { topic } = params;
+  const topicLength = topic.Contents.length;
   let topicRef;
+
   const onNext = () => {
-    if (currentIndex < topic.Contents.length - 1) {
+    if (currentIndex < topicLength - 1) {
       topicRef.scrollToIndex({
         animated: true,
         index: currentIndex + 1,
@@ -41,6 +45,11 @@ export default function TopicDetails() {
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back-sharp" size={24} color="black" />
       </TouchableOpacity>
+      <Progress.Bar
+        style={{ marginTop: 8 }}
+        progress={currentIndex / topicLength}
+        width={Dimensions.get("screen").width * 0.9}
+      />
       <FlatList
         pagingEnabled
         horizontal={true}
@@ -52,9 +61,6 @@ export default function TopicDetails() {
         renderItem={({ item }) => {
           return (
             <View style={styles.topic}>
-              <Text>
-                {currentIndex}, {topic.Contents.length - 1}
-              </Text>
               <Text style={styles.topicName}>{item.name}</Text>
               <Text>{item.description}</Text>
 
@@ -95,7 +101,7 @@ export default function TopicDetails() {
 
               <TouchableOpacity style={styles.nextBtn} onPress={onNext}>
                 <Text style={{ color: Colors.white, textAlign: "center" }}>
-                  Next
+                  {currentIndex === topicLength - 1 ? "Finish" : "Next"}
                 </Text>
               </TouchableOpacity>
             </View>
