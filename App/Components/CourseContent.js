@@ -1,24 +1,40 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../Shared/Colors";
 
 export default function CourseContent({ course }) {
+  const navigation = useNavigation();
+
+  const gotoTopicDetails = (topic) => {
+    navigation.push("topic-details", { topic });
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>CourseContent </Text>
+      <Text style={styles.title}>CourseContent</Text>
       <FlatList
         data={course?.topics}
         renderItem={({ item, index }) => {
           return (
-            <View style={styles.courseContent}>
+            <TouchableOpacity
+              style={styles.courseContent}
+              onPress={() => gotoTopicDetails(item)}
+            >
               <View style={styles.flexRow}>
-                <Text style={styles.number}>0{index + 1}</Text>
+                <Text style={styles.number}>{index + 1}</Text>
                 <Text style={styles.topic}>{item.topic}</Text>
               </View>
               <Ionicons name="play-circle" size={24} color={Colors.primary} />
-            </View>
+            </TouchableOpacity>
           );
         }}
       />

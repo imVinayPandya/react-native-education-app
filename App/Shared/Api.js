@@ -18,7 +18,9 @@ const getVideoCourse = () => api.get("/video-courses?populate=*");
 
 // Course list
 const getCourseList = (type) =>
-  api.get(`/course-lists?filters[type][$eq]=${type}&populate=*`);
+  api.get(
+    `/course-lists?filters[type][$eq]=${type}&populate[Topics][populate][0]=Contents&populate[image][populate][0]=image`
+  );
 
 export default {
   getSliders,
