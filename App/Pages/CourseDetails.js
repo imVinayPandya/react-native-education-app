@@ -50,7 +50,11 @@ export default function CourseDetails() {
           {course.description}
         </Text>
       </View>
-      <CourseContent course={course} userProgress={userProgress} />
+      <CourseContent
+        course={course}
+        userProgress={userProgress}
+        courseType={params.courseType}
+      />
     </View>
   );
 }

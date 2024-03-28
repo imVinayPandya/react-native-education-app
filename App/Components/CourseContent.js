@@ -11,12 +11,16 @@ import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../Shared/Colors";
 
-export default function CourseContent({ course, userProgress }) {
+export default function CourseContent({ course, userProgress, courseType }) {
   // hooks
   const navigation = useNavigation();
 
   const gotoTopicDetails = (topic) => {
-    navigation.push("topic-details", { topic, courseId: course.id });
+    if (courseType === "text") {
+      navigation.push("topic-details", { topic, courseId: course.id });
+    } else {
+      navigation.push("video-details", { topic, courseId: course.id });
+    }
   };
 
   return (
@@ -43,7 +47,7 @@ export default function CourseContent({ course, userProgress }) {
                 ) : (
                   <Text style={styles.number}>{index + 1}</Text>
                 )}
-                <Text style={styles.topic}>{item.topic}</Text>
+                <Text style={styles.topic}>{item.topic || item.name}</Text>
               </View>
               <Ionicons name="play-circle" size={24} color={Colors.primary} />
             </TouchableOpacity>

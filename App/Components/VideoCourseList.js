@@ -34,7 +34,7 @@ export default function VideoCourseList() {
   }, []);
 
   const openCourseDetails = (course) => {
-    navigation.navigate("course-details", { course });
+    navigation.navigate("course-details", { course, courseType: "video" });
   };
 
   return (
