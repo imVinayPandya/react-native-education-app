@@ -22,8 +22,18 @@ const getCourseList = (type) =>
     `/course-lists?filters[type][$eq]=${type}&populate[Topics][populate][0]=Contents&populate[image][populate][0]=image`
   );
 
+// course progress
+const setCourseProgress = (data) => api.post("/course-progresses", data);
+const getCourseProgress = (uid, courseId) => {
+  return api.get(
+    `/course-progresses?filter[uid][$eq]=${uid}&filters[courseId][$eq]=${courseId}`
+  );
+};
+
 export default {
   getSliders,
   getVideoCourse,
   getCourseList,
+  setCourseProgress,
+  getCourseProgress,
 };

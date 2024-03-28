@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,11 +11,12 @@ import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../Shared/Colors";
 
-export default function CourseContent({ course }) {
+export default function CourseContent({ course, userProgress }) {
+  // hooks
   const navigation = useNavigation();
 
   const gotoTopicDetails = (topic) => {
-    navigation.push("topic-details", { topic });
+    navigation.push("topic-details", { topic, courseId: course.id });
   };
 
   return (
@@ -24,13 +25,24 @@ export default function CourseContent({ course }) {
       <FlatList
         data={course?.topics}
         renderItem={({ item, index }) => {
+          const isCompleted = userProgress.find(
+            (progress) => item.id == progress.courseContentId
+          );
           return (
             <TouchableOpacity
               style={styles.courseContent}
               onPress={() => gotoTopicDetails(item)}
             >
               <View style={styles.flexRow}>
-                <Text style={styles.number}>{index + 1}</Text>
+                {isCompleted ? (
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={24}
+                    color={Colors.success}
+                  />
+                ) : (
+                  <Text style={styles.number}>{index + 1}</Text>
+                )}
                 <Text style={styles.topic}>{item.topic}</Text>
               </View>
               <Ionicons name="play-circle" size={24} color={Colors.primary} />
@@ -46,7 +58,7 @@ const styles = StyleSheet.create({
   flexRow: {
     display: "flex",
     flexDirection: "row",
-    gap: 16,
+    gap: 20,
     alignItems: "center",
   },
   container: {
